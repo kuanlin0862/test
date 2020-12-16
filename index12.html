@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+
+<div id="app">
+	<p>Commits</p>
+	<template v-for="branch in branches">
+		<input type="radio" :value="branch" v-model="currentBranch">
+		{{branch}}
+	</template>
+	<p>/test@{{currentBranch}}</p>
+	<ul>
+		<li v-for="record in commits">
+			<a :href="record.html_url" target="_blank" class="commit">更新紀錄</a>
+			-
+			by <span class="author"><a :href="record.html_url" target="_blank">{{record.commit.author.name}}</a></span>
+			at <span class="date">{{record.commit.author.date}}</span>
+		</li>
+	</ul>
+</div>
+
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+var apiUrl = 'https://api.github.com/repos/kuanlin0862/test/commits?per_page=3';
+var app = new Vue({
+	el: '#app',
+	data:{
+		branches: ['master', 'devlop'],
+		currentBranch: 'master',
+		commits: null
+	},
+	//
+	created: function() {
+		this.fetchData();
+	},
+	//如果有更動currentBranch: 'master', 這筆資料的話, 去執行fetchData
+	watch: {
+		currentBranch: 'fetchData'
+	},
+	//
+	methods:{
+		fetchData: function() {
+			var self = this;
+			//
+   			axios.get(apiUrl)
+   			.then(function (response) {
+   				console.log('fetchData ok');
+   				self.commits = response.data;
+			    // return response;
+			});
+			//
+   // 			return axios.get(apiUrl)
+   // 			.then(function (response) {
+   // 				console.log('fetchData ok');
+			//     return response;
+			// });
+		}
+	},
+	//配合59~63, 下方也可以正常執行
+	// mounted: function () {
+ //        //
+ //        var self = this;
+ //        this.fetchData().then(function (rtndata) {
+ //        	console.log('fetchData ok');
+ //            self.commits = rtndata.data;
+ //        });
+ //    }
+});
+
+</script>
+</body>
+</html>

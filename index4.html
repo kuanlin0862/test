@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+
+<div id="app">
+	<p>colors</p>
+	<ul>
+		<li v-for="color in colors">{{color}}</li>
+	</ul>
+
+	<p>father</p>
+	<ul>
+		<li v-for="home in homes">{{home.father}}</li>
+	</ul>
+</div>
+
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script type="text/javascript">
+//基本架構
+var app = new Vue({
+	el: '#app', //element, 綁定id
+	data:{
+		colors:['blue', 'red', 'black'],
+		homes:[
+			{father:'tom'},
+			{father:'bob'},
+			{father:'john'}
+		]
+	}
+});
+
+</script>
+</body>
+</html>

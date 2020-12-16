@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+
+<div id="app">
+	<input type="text" placeholder="請輸入代辦事項" @keyup.enter="addTodo(newTodo)" v-model="newTodo">
+	<h2>代辦事項</h2>
+	<ul>
+		<li v-for="todo in todos">
+		{{todo.content}}
+		<!-- prevent 取消預設行為 -->
+		- <a href="#" @click.prevent="removeTodo(todo)">delete</a>
+		</li>
+	</ul>
+</div>
+
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script type="text/javascript">
+//基本架構
+var app = new Vue({
+	el: '#app',
+	data:{
+		todos:[],
+		newTodo:''
+	},
+	methods:{
+		addTodo: function(todo){
+			//data.todos
+			this.todos.push({content:todo, completed: false});
+		},
+		removeTodo: function(todo){
+			this.todos.splice(this.todos.indexOf(todo), 1);
+		}
+	}
+});
+
+</script>
+</body>
+</html>

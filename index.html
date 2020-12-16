@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<div id="app">
+	{{message}}
+	{{score * 0.8}}
+</div>
+
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script type="text/javascript">
+//基本架構
+var app = new Vue({
+	el: '#app', //element, 綁定id
+	data:{
+		message:'test',
+		score: 60
+	}
+});
+
+</script>
+</body>
+</html>

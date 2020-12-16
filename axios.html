@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+
+
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script type="text/javascript">
+let vm = new Vue({
+    el: '#app',
+    data: () => ({ //arrow function
+        allCourse: [], //空陣列
+        apiUrl: {
+            allCourse: '{{url('api/mock/course')}}', //api網址
+        },
+    }),
+    computed: { //computed 會將結果暫存起來，當參考到的資料改變時，computed 才會重新計算。
+        topRegionCourse: function() {
+            return this.allCourse[0];
+        },
+    },
+    methods: { //方法
+        async getData(payload) { //第一次載入時payload還沒有任何值, 按下載入更多後=>getMoreData(MouseEvent), payload = MouseEvent,
+            let data = { category: this.categoryId, ...payload }; //... 將payload的值放入此data內
+            return await axios({ //使用async/await將axios異部請求同步化
+                url: this.apiUrl.allCourse,
+                method: 'GET',
+                data,
+            }).then(res => { //取得結果
+                console.log(res);
+                return res.data.aaData;
+            }).catch(err => null); //錯誤
+        },
+        async getMoreData(payload) { //載入更多
+            payload.page ++; //MouseEvent.page ++
+            console.log(payload);
+            console.log(this.allCourse);
+            this.allCourse.push(...await this.getData(payload)); //使用... 將取得的資料push到allCourse陣列內
+        }
+    },
+    // created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
+	// mounted:在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
+    async mounted() {
+        this.allCourse = await this.getData();
+    },
+    //監聽
+    watch: {
+    }
+});
+</script>
+</body>
+</html>
